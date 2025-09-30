@@ -11,8 +11,7 @@ interface CoreWriter {
 }
 
 contract HLInterop {
-    address constant CoreWriterAddr =
-        0x3333333333333333333333333333333333333333;
+    address constant CoreWriterAddr = 0x3333333333333333333333333333333333333333;
     address public owner;
 
     modifier onlyOwner() {
@@ -39,10 +38,7 @@ contract HLInterop {
         CancelOrderByCLOID
     }
 
-    function _executeAction(
-        ActionKind actionKind,
-        bytes memory encodedAction
-    ) internal {
+    function _executeAction(ActionKind actionKind, bytes memory encodedAction) internal {
         bytes memory data = new bytes(4 + encodedAction.length);
         data[0] = 0x01;
         data[1] = 0x00;
@@ -68,15 +64,7 @@ contract HLInterop {
         uint8 encodedTif,
         uint128 cloid
     ) public onlyOwner {
-        bytes memory encodedAction = abi.encode(
-            asset,
-            isBuy,
-            limitPx,
-            sz,
-            reduceOnly,
-            encodedTif,
-            cloid
-        );
+        bytes memory encodedAction = abi.encode(asset, isBuy, limitPx, sz, reduceOnly, encodedTif, cloid);
 
         _executeAction(ActionKind.LimitOrder, encodedAction);
     }
@@ -86,16 +74,8 @@ contract HLInterop {
         _executeAction(ActionKind.VaultTransfer, encodedAction);
     }
 
-    function TokenDelegate(
-        address validator,
-        uint64 weiAmount,
-        bool isUndelegate
-    ) public onlyOwner {
-        bytes memory encodedAction = abi.encode(
-            validator,
-            weiAmount,
-            isUndelegate
-        );
+    function TokenDelegate(address validator, uint64 weiAmount, bool isUndelegate) public onlyOwner {
+        bytes memory encodedAction = abi.encode(validator, weiAmount, isUndelegate);
         _executeAction(ActionKind.TokenDelegate, encodedAction);
     }
 
@@ -109,11 +89,7 @@ contract HLInterop {
         _executeAction(ActionKind.StakingWithdraw, encodedAction);
     }
 
-    function SpotSend(
-        address destination,
-        uint64 token,
-        uint64 weiAmount
-    ) public onlyOwner {
+    function SpotSend(address destination, uint64 token, uint64 weiAmount) public onlyOwner {
         bytes memory encodedAction = abi.encode(destination, token, weiAmount);
         _executeAction(ActionKind.SpotSend, encodedAction);
     }
@@ -123,16 +99,11 @@ contract HLInterop {
         _executeAction(ActionKind.USDClassTransfer, encodedAction);
     }
 
-    function FinalizeEVMContract(
-        uint64 token,
-        uint8 encodedFinalizeEvmContractVariant,
-        uint64 createNonce
-    ) public onlyOwner {
-        bytes memory encodedAction = abi.encode(
-            token,
-            encodedFinalizeEvmContractVariant,
-            createNonce
-        );
+    function FinalizeEVMContract(uint64 token, uint8 encodedFinalizeEvmContractVariant, uint64 createNonce)
+        public
+        onlyOwner
+    {
+        bytes memory encodedAction = abi.encode(token, encodedFinalizeEvmContractVariant, createNonce);
         _executeAction(ActionKind.FinalizeEVMContract, encodedAction);
     }
 
